@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="desktopApplicationPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>JPA.entities.Programa</class>
+    <class>JPA.entities.Sector</class>
+    <class>JPA.entities.Entidad</class>
+    <class>JPA.entities.Usuario</class>
+    <class>JPA.entities.Proyecto</class>
+    <class>JPA.entities.Banco</class>
+    <class>JPA.entities.Presupue</class>
+    <class>JPA.entities.Proveedor</class>
+    <class>JPA.entities.Articulo</class>
+    <class>JPA.entities.Partida</class>
+    <class>JPA.entities.Actividad</class>
+    <class>JPA.entities.Obra</class>
+    <class>JPA.entities.Departa</class>
+    <class>JPA.entities.Tipdocum</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/projectdb"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="pwd"/>
+      <property name="hibernate.jdbc.batch_size" value="50"/>
+    </properties>
+  </persistence-unit>
+</persistence>
