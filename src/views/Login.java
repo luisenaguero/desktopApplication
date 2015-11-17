@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 
 import javax.persistence.Index;
 import javax.swing.JOptionPane;
-import org.apache.commons.codec.DecoderException;
 
 /**
  *
@@ -69,8 +68,6 @@ public class Login extends javax.swing.JPanel {
             }
         });
 
-        LoginError.setText("jLabel1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -83,15 +80,15 @@ public class Login extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(81, 81, 81)
                                 .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(65, 65, 65)
-                                .addComponent(jLabel3))
                             .addComponent(LoginField)
                             .addComponent(PassField)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(412, 412, 412)
-                        .addComponent(LoginError)))
+                        .addGap(369, 369, 369)
+                        .addComponent(LoginError))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(356, 356, 356)
+                        .addComponent(jLabel3)))
                 .addContainerGap(299, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -100,16 +97,16 @@ public class Login extends javax.swing.JPanel {
                 .addGap(32, 32, 32)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(LoginField, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addComponent(LoginField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
                 .addComponent(jLabel3)
-                .addGap(37, 37, 37)
-                .addComponent(PassField, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
+                .addGap(26, 26, 26)
+                .addComponent(PassField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(LoginError)
-                .addGap(60, 60, 60))
+                .addGap(62, 62, 62)
+                .addComponent(LoginError, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(77, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -117,19 +114,17 @@ public class Login extends javax.swing.JPanel {
         try {
             // TODO add your handling code here:
             boolean login = loginController.Login(LoginField.getText(), new String(PassField.getPassword()));
-            System.out.println("Usuario: " + LoginField.getText());
+          /*  System.out.println("Usuario: " + LoginField.getText());
             System.out.println("Pass: " + new String(PassField.getPassword()));
-            System.out.println("Session: " + login);           
+            System.out.println("Session: " + login);       */    
             if(login != false){
+                App.menuPrincipal.setEnabled(true);
                 App.PanelCentral.removeAll();
                 App.PanelCentral.add(selector);
                 App.PanelCentral.updateUI();
             }else{
-                LoginError.setText("Erro al iniciar Session");
+                LoginError.setText("Error al iniciar Session");
             }
-
-        } catch (DecoderException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {

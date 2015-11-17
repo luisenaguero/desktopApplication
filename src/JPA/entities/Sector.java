@@ -31,16 +31,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = Sector.FIND_ALL, query = "SELECT s FROM Sector s"),
+    @NamedQuery(name = Sector.DIF_CODE, query = "SELECT COUNT(s) FROM Sector s WHERE s.codsector = :codsector AND s.id != :idsector"),
     @NamedQuery(name = Sector.CODE_EXISTS, query = "SELECT COUNT(s) FROM Sector s WHERE s.codsector = :codsector"),
     @NamedQuery(name = "Sector.findByDetsector", query = "SELECT s FROM Sector s WHERE s.detsector = :detsector"),
-    @NamedQuery(name = "Sector.findByCodsector", query = "SELECT s FROM Sector s WHERE s.codsector = :codsector")})
+    @NamedQuery(name = Sector.FIND_BY_CODE, query = "SELECT s FROM Sector s WHERE s.codsector = :codsector")})
 @AttributeOverride(name = "id", column = @Column(name = "id_sector"))
 public class Sector extends Entidad {
 
     //CONSTANTES
     public static final String FIND_ALL = "Sector.findAll";
-    public static final String FIND_BY_ID = "Sector.findById";
+    public static final String FIND_BY_CODE = "Sector.findByCode";
     public static final String CODE_EXISTS = "Sector.codeExits";
+    public static final String DIF_CODE = "Sector.difCode";
 
     //VARIABLES
     @Column(name = "detsector")

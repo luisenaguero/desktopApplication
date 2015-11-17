@@ -5,6 +5,8 @@
  */
 package Controllers;
 
+import JPA.entities.Presupue;
+import JPA.entities.Programa;
 import JPA.entities.Sector;
 import JPA.utilities.JPAManager;
 import java.util.List;
@@ -20,20 +22,22 @@ import javax.swing.table.TableColumnModel;
 public class TableController {
 
     //ENTIDAD SECTOR
-    JPAManager jpamSector = new JPAManager(Sector.class);
     Sector sector = new Sector();
+    Presupue presupue = new Presupue();
 
     //ENTIDAD XXX
     public DefaultTableModel Opciones(String op) {
-        List<Sector> listaS = jpamSector.objectListResultNQ(Sector.FIND_ALL, null);
-        DefaultTableModel modelo = new DefaultTableModel();
+
         switch (op) {
             case "sector": {
+                JPAManager jpam = new JPAManager(Sector.class);
+                List<Sector> lista = jpam.objectListResultNQ(Sector.FIND_ALL, null);
+                DefaultTableModel modelo = new DefaultTableModel();
                 String[] col = {"id", "SECTOR", "DETSECTOR"};
                 for (int i = 0; i < col.length; i++) {
                     modelo.addColumn(col[i]);
                 }
-                for (Sector sec : listaS) {
+                for (Sector sec : lista) {
 
                     String newCode = sec.getCodsector().toString();
 
@@ -46,9 +50,50 @@ public class TableController {
 
                 return modelo;
             }
-            case "actividad": {
-                String[] col = {"id",};
+            case "presupuesto": {
+                String[] col = {"id", "codpresup", "descripcion", "corrsoli", "corrpago", "emprcons"};
+                DefaultTableModel modelo = new DefaultTableModel();
+                JPAManager jpam = new JPAManager(Presupue.class);
+                List<Presupue> lista = jpam.listResultNQ(Presupue.FIND_ALL, null);
+                for (int i = 0; i < col.length; i++) {
+                    modelo.addColumn(col[i]);
+                }
+                try {
+                    for (Presupue pre : lista) {
+                        String newCode = Integer.toString(pre.getCodpresup());
+                        if (pre.getCodpresup() < 10) {
+                            newCode = "0" + newCode;
+                        }
+                        modelo.addRow(new Object[]{pre.getId(), newCode, pre.getDescri(), pre.getCorrsoli(), pre.getCorrpago(), pre.getEmprcons()});
+                    }
 
+                } catch (Exception e) {
+                }
+
+                return modelo;
+            }
+            case "programa": {                
+                String[] col = {"id", "SEC.", "PROG.", "NOMBRE"};
+                DefaultTableModel modelo = new DefaultTableModel();
+                JPAManager jpam = new JPAManager(Programa.class);
+                List<Programa> lista = jpam.listResultNQ(Programa.FIND_ALL, null);
+                for (int i = 0; i < col.length; i++) {
+                    modelo.addColumn(col[i]);
+                }
+                for (Programa pro : lista) {     
+                    String newCode = pro.getCodprogr().toString();
+                    if (pro.getCodprogr() < 10) {
+                        newCode = "0" + newCode;
+                    }
+
+                    String newSectorCode = pro.getCodsector().getCodsector().toString();
+                    if (newSectorCode.length() < 2) {
+                        newSectorCode = "0" + newSectorCode;
+                    }
+
+                    modelo.addRow(new Object[]{pro.getId(), newSectorCode, newCode, pro.getDetprogr()});
+                }
+                return modelo;
             }
 
         }

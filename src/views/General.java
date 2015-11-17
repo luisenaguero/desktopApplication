@@ -6,12 +6,18 @@
 package views;
 
 import Controllers.TableController;
+import JPA.entities.Presupue;
+import JPA.entities.Programa;
 import JPA.entities.Sector;
 import JPA.utilities.JPAManager;
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
+import views.Actualizar.ActualizarPresupuesto;
+import views.Actualizar.ActualizarPrograma;
 import views.Actualizar.ActualizarSector;
+import views.Registros.RegistroPresupuesto;
+import views.Registros.RegistroPrograma;
 import views.Registros.RegistroSector;
 
 /**
@@ -26,13 +32,15 @@ public class General extends javax.swing.JPanel {
     TableController tc = new TableController();
     JPAManager jpam;
     long id;
-    int row ;
+    int row;
     String opcion = "";
     Sector sector = new Sector();
+    Presupue presupuesto = new Presupue();
 
     public General(String op) {
         initComponents();
         opcion = op;
+
         DefaultTableModel modelo = tc.Opciones(op);
         GeneralTable.setModel(modelo);
         GeneralTable.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -40,11 +48,30 @@ public class General extends javax.swing.JPanel {
         GeneralTable.getColumnModel().getColumn(0).setPreferredWidth(0);
         GeneralTable.doLayout();
         PanelRegistro.setLayout(new BorderLayout());
-        switch(op){
-            case "sector":{
+        switch (op) {
+            case "sector": {
                 RegistroSector rs = new RegistroSector();
                 PanelRegistro.add(rs);
                 PanelRegistro.updateUI();
+                PanelEntidad.getAccessibleContext().setAccessibleName("Sector");
+                PanelEntidad.updateUI();
+                break;
+            }
+            case "presupuesto": {
+                RegistroPresupuesto rs = new RegistroPresupuesto();
+                PanelRegistro.add(rs);
+                PanelRegistro.updateUI();
+                PanelEntidad.getAccessibleContext().setAccessibleName("Presupuesto");
+                PanelEntidad.updateUI();
+                break;
+            }
+            case "programa": {
+                RegistroPrograma rs = new RegistroPrograma();
+                PanelRegistro.add(rs);
+                PanelEntidad.getAccessibleContext().setAccessibleName("Programa");
+                PanelEntidad.updateUI();
+                PanelRegistro.updateUI();
+
                 break;
             }
         }
@@ -151,14 +178,12 @@ public class General extends javax.swing.JPanel {
     private void GeneralTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GeneralTableMouseClicked
         row = GeneralTable.rowAtPoint(evt.getPoint());
         id = (long) GeneralTable.getValueAt(row, 0);
-        System.out.println("ID: " + id);
+        //    System.out.println("ID: " + id);
     }//GEN-LAST:event_GeneralTableMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        System.out.println("poup");
-        System.out.println(opcion);
-        System.out.println(id);
+
         switch (opcion) {
             case "sector": {
                 if (id > 0) {
@@ -169,7 +194,26 @@ public class General extends javax.swing.JPanel {
                 } else {
                     System.out.println("Seleccione una fila");
                 }
+            }
+            case "presupuesto": {
+                if (id > 0) {
+                    jpam = new JPAManager(Presupue.class);
+                    presupuesto.setId(id);
+                    System.out.println(jpam.deleteEntity(presupuesto));
+                    tc.updateTable(GeneralTable, opcion);
+                } else {
+                    System.out.println("Seleccione una fila");
+                }
+            }
 
+            case "programa": {
+                if (id > 0) {
+                    jpam = new JPAManager(Programa.class);
+                    System.out.println(jpam.deleteEntity(new Programa(id)));
+                    tc.updateTable(GeneralTable, opcion);
+                } else {
+                    System.out.println("Seleccione una fila");
+                }
             }
         }
 
@@ -179,9 +223,30 @@ public class General extends javax.swing.JPanel {
         // TODO add your handling code here:
         PanelRegistro.setBorder(BorderFactory.createTitledBorder("Actualizar"));
         PanelRegistro.removeAll();
-        ActualizarSector as = new ActualizarSector(row);
-        PanelRegistro.add(as);
-        PanelRegistro.updateUI();
+        switch (opcion) {
+            case "sector": {
+                ActualizarSector res = new ActualizarSector(row);
+                PanelRegistro.add(res);
+                PanelRegistro.updateUI();
+                System.out.println("Acutualizar Sector");
+                break;
+            }
+            case "presupuesto": {
+                ActualizarPresupuesto res = new ActualizarPresupuesto(row);
+                PanelRegistro.add(res);
+                PanelRegistro.updateUI();
+                System.out.println("Acutualizar Presupuesto");
+                break;
+            }
+            case "programa": {
+                ActualizarPrograma res = new ActualizarPrograma(row);
+                PanelRegistro.add(res);
+                PanelRegistro.updateUI();
+                System.out.println("Acutualizar Programa");
+                break;
+            }
+        }
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
 

@@ -7,39 +7,50 @@ package views.Actualizar;
 
 import views.Registros.*;
 import Controllers.TableController;
+import JPA.entities.Programa;
 import JPA.entities.Sector;
 import JPA.utilities.JPAManager;
 import java.util.HashMap;
+import java.util.List;
 import javax.swing.BorderFactory;
 import views.General;
 
 /**
  *
- * @author Eddie Master
+ * @author luisenaguero
  */
-public class ActualizarSector extends javax.swing.JPanel {
+public class ActualizarPrograma extends javax.swing.JPanel {
 
     /**
      * Creates new form RegistroSector
      */
-    JPAManager jpam = new JPAManager(Sector.class);
+    JPAManager jpam = new JPAManager(Programa.class);
     TableController tc = new TableController();
-    Sector sec = new Sector();
+    Programa prog = new Programa();
+    public List<Sector> listaSectores = (List<Sector>) jpam.objectListResultNQ(Sector.FIND_ALL, null);
     public boolean validCode = true;
+    boolean validSector = true;
     int row;
 
-    public ActualizarSector(int r) {
+    public ActualizarPrograma(int r) {
         initComponents();
         row = r;
 
-        sec = (Sector) jpam.findEntity(General.GeneralTable.getValueAt(row, 0));
-        if (sec.getCodsector() < 10) {
-            codigo.setText("0" + sec.getCodsector());
+        prog = (Programa) jpam.findEntity(General.GeneralTable.getValueAt(row, 0));
+
+        if (prog.getCodprogr() < 10) {
+            codigo.setText("0" + prog.getCodprogr());
         } else {
-            codigo.setText("" + sec.getCodsector());
+            codigo.setText("" + prog.getCodprogr());
         }
 
-        det.setText(sec.getDetsector());
+        for (Sector sector : listaSectores) {
+            sectorList.addItem(sector.getCodsector());
+        }
+
+        sectorList.setSelectedItem(prog.getCodsector().getCodsector());
+
+        det.setText(prog.getDetprogr());
 
     }
 
@@ -59,6 +70,8 @@ public class ActualizarSector extends javax.swing.JPanel {
         actualizarBoton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        sectorList = new javax.swing.JComboBox();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Código:");
@@ -94,6 +107,15 @@ public class ActualizarSector extends javax.swing.JPanel {
 
         errorLabel.setForeground(new java.awt.Color(255, 0, 51));
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel3.setText("Sector:");
+
+        sectorList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sectorListActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,14 +128,18 @@ public class ActualizarSector extends javax.swing.JPanel {
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(136, 136, 136)
+                        .addComponent(jLabel3)
+                        .addGap(40, 40, 40)
+                        .addComponent(sectorList, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(det, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-                        .addGap(94, 94, 94)
+                        .addComponent(det, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(194, 194, 194)
                         .addComponent(actualizarBoton, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
@@ -122,38 +148,52 @@ public class ActualizarSector extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                    .addComponent(jLabel3)
+                    .addComponent(sectorList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(det, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(det, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(actualizarBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(errorLabel)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void actualizarBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarBotonActionPerformed
         // TODO add your handling code here:
-        Sector sector = new Sector();
-        sector.setCodsector(Short.parseShort(codigo.getText()));
-        sector.setDetsector(det.getText());
-        sector.setId((Long) General.GeneralTable.getValueAt(row, 0));
-        boolean rest = jpam.updateEntity(sector);
-        tc.updateTable(General.GeneralTable, "sector");
-        
-        if (rest) {
-            //  jLabel3.setText("Se actializo con exito");
+        Programa programa = new Programa();
+        programa.setCodprogr(Short.parseShort(codigo.getText()));
+        programa.setDetprogr(det.getText());
+        programa.setId((Long) General.GeneralTable.getValueAt(row, 0));
+
+        programa.setCodsector((Sector) jpam.objectListResultNQ(Sector.FIND_BY_CODE,
+                new HashMap<String, Object>() {
+                    {
+                        put("codsector", sectorList.getSelectedItem());
+                    }
+                }).get(0));
+
+        tc.updateTable(General.GeneralTable, "programa");
+
+        if (jpam.updateEntity(programa)) {
+
+            tc.updateTable(General.GeneralTable, "programa");
+
             General.PanelRegistro.removeAll();
-            RegistroSector rs = new RegistroSector();
+            RegistroPrograma rs = new RegistroPrograma();
             General.PanelRegistro.setBorder(BorderFactory.createTitledBorder("Nuevo Registro"));
             General.PanelRegistro.add(rs);
             General.PanelRegistro.updateUI();
+
+            tc.updateTable(General.GeneralTable, "programa");
+
         } else {
             // jLabel3.setText("error");
         }
@@ -180,17 +220,16 @@ public class ActualizarSector extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void codigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyReleased
-        // TODO add your handling code here:
+    private void revisarCompletitud() {
 
         if (!codigo.getText().contains(" ")) {
 
             // REVISO QUE EL CÓDIGO NO EXISTA
-            validCode = !(jpam.codeExists(Sector.DIF_CODE,
+            validCode = !(jpam.codeExists(Programa.DIF_CODE,
                     new HashMap<String, Object>() {
                         {
-                            put("codsector", Short.parseShort(codigo.getText()));
-                            put("idsector", sec.getId());
+                            put("codprogr", Short.parseShort(codigo.getText()));
+                            put("idprogr", prog.getId());
                         }
                     }));
 
@@ -206,7 +245,19 @@ public class ActualizarSector extends javax.swing.JPanel {
             errorLabel.setText("Ingrese un código");
             actualizarBoton.setEnabled(false);
         }
+
+    }
+
+    private void codigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyReleased
+        // TODO add your handling code here:
+        revisarCompletitud();
+
     }//GEN-LAST:event_codigoKeyReleased
+
+    private void sectorListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorListActionPerformed
+        //     revisarCompletitud();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sectorListActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -217,5 +268,7 @@ public class ActualizarSector extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JComboBox sectorList;
     // End of variables declaration//GEN-END:variables
 }

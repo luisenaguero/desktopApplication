@@ -11,8 +11,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
 import views.Login;
 
 /**
@@ -24,7 +22,7 @@ public class LoginController {
     JPAManager jpam = new JPAManager(Usuario.class);
     Usuario usuario = new Usuario();
 
-    public boolean Login(String user, String pass) throws DecoderException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public boolean Login(String user, String pass) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-1");
         md.reset();
         String sha = new String(md.digest(pass.getBytes("UTF-8")));

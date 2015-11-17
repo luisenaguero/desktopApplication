@@ -32,13 +32,17 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = Programa.FIND_ALL, query = "SELECT p FROM Programa p"),
+    @NamedQuery(name = Programa.DIF_CODE, query = "SELECT COUNT(p) FROM Programa p WHERE p.codprogr = :codprogr AND p.id != :idprogr"),
+    @NamedQuery(name = Programa.CODE_EXISTS, query = "SELECT COUNT(p) FROM Programa p WHERE p.codprogr = :codprog"),
     @NamedQuery(name = "Programa.findByDetprogr", query = "SELECT p FROM Programa p WHERE p.detprogr = :detprogr"),
     @NamedQuery(name = "Programa.findByCodprogr", query = "SELECT p FROM Programa p WHERE p.codprogr = :codprogr")})
 @AttributeOverride(name = "id", column = @Column(name = "id_programa"))
 public class Programa extends Entidad {
-   
+
     // CONSTANTES
     public static final String FIND_ALL = "Programa.findAll";
+    public static final String DIF_CODE = "Programa.difCode";
+    public static final String CODE_EXISTS = "Programa.codeExists";
 
     // VARIABLES
     private static final long serialVersionUID = 1L;
@@ -54,6 +58,10 @@ public class Programa extends Entidad {
 
     // GETTERS Y SETTERS
     public Programa() {
+    }
+
+    public Programa(Long id) {
+        super.setId(id);
     }
 
     public String getDetprogr() {

@@ -6,6 +6,10 @@
 package views.Entidades;
 
 import Controllers.TableController;
+import JPA.entities.Presupue;
+import JPA.entities.Programa;
+import JPA.utilities.JPAManager;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,15 +21,21 @@ public class Test extends javax.swing.JFrame {
     /**
      * Creates new form Test
      */
-    TableController TC = new TableController();
+    JPAManager jpam = new JPAManager(Programa.class);
+    TableController TC = new TableController(); 
     public Test() {
         initComponents();
-        DefaultTableModel modelo = TC.Opciones("sector");
-        TestTable.setModel(modelo);
-        TestTable.getColumnModel().getColumn(0).setMaxWidth(0);
-        TestTable.getColumnModel().getColumn(0).setMinWidth(0);
-        TestTable.getColumnModel().getColumn(0).setPreferredWidth(0);
-        TestTable.doLayout();
+//        DefaultTableModel modelo = TC.Opciones("sector");
+//        TestTable.setModel(modelo);
+//        TestTable.getColumnModel().getColumn(0).setMaxWidth(0);
+//        TestTable.getColumnModel().getColumn(0).setMinWidth(0);
+//        TestTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+//        TestTable.doLayout();
+        List<Programa> lista = jpam.listResultNQ(Programa.FIND_ALL, null);
+        for(Programa pre: lista){
+            jComboBox1.addItem(pre.getCodprogr());
+        }
+        
     }
 
     /**
@@ -37,52 +47,29 @@ public class Test extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TestTable = new javax.swing.JTable();
+        jComboBox1 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        TestTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        TestTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TestTableMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(TestTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(146, 146, 146)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addGap(221, 221, 221)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(244, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addGap(192, 192, 192)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(273, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void TestTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TestTableMouseClicked
-        // TODO add your handling code here:
-        int row = TestTable.rowAtPoint(evt.getPoint());
-        
-        System.out.println("ID: "+TestTable.getValueAt(row,0));
-    }//GEN-LAST:event_TestTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -120,7 +107,6 @@ public class Test extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TestTable;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox jComboBox1;
     // End of variables declaration//GEN-END:variables
 }

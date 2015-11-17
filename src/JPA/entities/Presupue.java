@@ -6,6 +6,7 @@
 package JPA.entities;
 
 import java.io.Serializable;
+import javax.persistence.AttributeOverride;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,16 +26,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "presupue")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Presupue.findAll", query = "SELECT p FROM Presupue p"),
-    @NamedQuery(name = "Presupue.findByPresup", query = "SELECT p FROM Presupue p WHERE p.presup = :presup"),
+    @NamedQuery(name = Presupue.FIND_ALL, query = "SELECT p FROM Presupue p"),
+    @NamedQuery(name = Presupue.CODE_EXISTS, query = "SELECT COUNT(p) FROM Presupue p WHERE p.codpresup = :codpresup"),
+    @NamedQuery(name = "Presupue.findByPresup", query = "SELECT p FROM Presupue p WHERE p.codpresup = :presup"),
     @NamedQuery(name = "Presupue.findByDescri", query = "SELECT p FROM Presupue p WHERE p.descri = :descri"),
     @NamedQuery(name = "Presupue.findByCorrsoli", query = "SELECT p FROM Presupue p WHERE p.corrsoli = :corrsoli"),
-    @NamedQuery(name = "Presupue.findByCorrpago", query = "SELECT p FROM Presupue p WHERE p.corrpago = :corrpago"),
-    @NamedQuery(name = "Presupue.findByIdPresupue", query = "SELECT p FROM Presupue p WHERE p.idPresupue = :idPresupue")})
-public class Presupue implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Column(name = "presup")
-    private String presup;
+    @NamedQuery(name = "Presupue.findByCorrpago", query = "SELECT p FROM Presupue p WHERE p.corrpago = :corrpago")})
+@AttributeOverride(name = "id", column = @Column(name = "id_presupue"))
+public class Presupue extends Entidad {
+
+    // CONSTANTES
+    public static final String FIND_ALL = "Presupue.findAll";
+    public static final String CODE_EXISTS = "Presupue.codeExists";
+
+    // VARIABLES
+    @Column(name = "codpresup")
+    private int codpresup;
     @Column(name = "descri")
     private String descri;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -42,25 +49,23 @@ public class Presupue implements Serializable {
     private Double corrsoli;
     @Column(name = "corrpago")
     private Double corrpago;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id_presupue")
-    private Integer idPresupue;
+    @Column(name = "emprcons")
+    private String emprcons;
 
-    public Presupue() {
+    public String getEmprcons() {
+        return emprcons;
     }
 
-    public Presupue(Integer idPresupue) {
-        this.idPresupue = idPresupue;
+    public void setEmprcons(String emprcons) {
+        this.emprcons = emprcons;
     }
 
-    public String getPresup() {
-        return presup;
+    public int getCodpresup() {
+        return codpresup;
     }
 
-    public void setPresup(String presup) {
-        this.presup = presup;
+    public void setCodpresup(int codpresup) {
+        this.codpresup = codpresup;
     }
 
     public String getDescri() {
@@ -87,37 +92,9 @@ public class Presupue implements Serializable {
         this.corrpago = corrpago;
     }
 
-    public Integer getIdPresupue() {
-        return idPresupue;
-    }
-
-    public void setIdPresupue(Integer idPresupue) {
-        this.idPresupue = idPresupue;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idPresupue != null ? idPresupue.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Presupue)) {
-            return false;
-        }
-        Presupue other = (Presupue) object;
-        if ((this.idPresupue == null && other.idPresupue != null) || (this.idPresupue != null && !this.idPresupue.equals(other.idPresupue))) {
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public String toString() {
-        return "JPA.entities.Presupue[ idPresupue=" + idPresupue + " ]";
+        return "JPA.entities.Presupue[ idPresupue=" + super.getId() + " ]";
     }
-    
+
 }

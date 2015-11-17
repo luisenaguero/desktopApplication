@@ -86,7 +86,7 @@ public class JPAManager<T extends Entidad> {
         return (result == 1);
 
     }
-
+    
     public boolean deleteEntity(T entity) {
         return entityCUD(entity, Actions.DELETE);
     }
